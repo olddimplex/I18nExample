@@ -1,0 +1,71 @@
+package filter;
+
+import java.io.IOException;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+
+import util.HttpUtil;
+import action.AServlet;
+
+/**
+ * Servlet Filter implementation class RequestEnrichmentFilter
+ */
+@WebFilter(filterName = "RequestEnrichmentFilter", urlPatterns={"/*"}, dispatcherTypes={DispatcherType.REQUEST})
+public class RequestEnrichmentFilter implements Filter {
+
+	/** Session attribute name holding the initial URL requested */
+	public static final String RELOAD_URL_ATTRIBUTE_NAME = "pageReloadUrl";
+	
+	public static final String CHARACTER_ENCODING = "UTF-8";
+
+    /**
+     * Default constructor. 
+     */
+    public RequestEnrichmentFilter() {
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see Filter#destroy()
+	 */
+	public void destroy() {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
+	 */
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		if(request.getCharacterEncoding() == null) {
+			request.setCharacterEncoding(CHARACTER_ENCODING);
+		}
+		response.setCharacterEncoding(CHARACTER_ENCODING);
+		chain.doFilter(request, response);
+		
+		if(HttpUtil.isHttpRequest(request)) {
+			final HttpServletRequest httpRequest = (HttpServletRequest)request;
+			// URL that caused this request
+			final StringBuffer sb = httpRequest.getRequestURL();
+			if(httpRequest.getQueryString() != null) {
+				sb.append("?").append(httpRequest.getQueryString());
+			}
+			request.setAttribute(RELOAD_URL_ATTRIBUTE_NAME, sb.toString());
+		}
+	}
+
+	/**
+	 * @see Filter#init(FilterConfig)
+	 */
+	public void init(FilterConfig fConfig) throws ServletException {
+		// TODO Auto-generated method stub
+	}
+
+}

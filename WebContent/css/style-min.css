@@ -1,0 +1,44 @@
+p{margin:0 0 10px}
+.hidden{display:none!important}
+#loader,.loadcloak{position:absolute;top:0;left:0;width:100%;height:100%;z-index:500003!important;background-color:#fff;opacity:1}
+#loader{opacity:.8!important}
+#loader:before,.loadcloak:before{content:"";position:absolute;left:50%;top:50%;margin:-75px 0 0 -75px;border:16px solid #f0f0f0;border-radius:50%;border-top:16px solid #2e6da4;width:120px;height:120px;z-index:500004!important;opacity:1!important;-webkit-animation:spin 2s linear infinite;animation:spin 2s linear infinite}@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg)}}@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.pagination{margin:25px 0 25px}
+.pagination{display:inline-block;padding-left:0;border-radius:0}
+.pagination>li{display:inline}
+.pagination>li>a,
+.pagination>li>span{position:relative;float:left;padding:6px 12px;line-height:1.42857143;text-decoration:none;color:#337ab7;background-color:#fff;border:1px solid #ddd;margin-left:-1px}
+.pagination>li:first-child>a,
+.pagination>li:first-child>span{margin-left:0;border-bottom-left-radius:0;border-top-left-radius:0}
+.pagination>li:last-child>a,
+.pagination>li:last-child>span{border-bottom-right-radius:0;border-top-right-radius:0}
+.pagination>li>a:focus,
+.pagination>li>a:hover,
+.pagination>li>span:focus,
+.pagination>li>span:hover{z-index:2;color:#23527c;background-color:#eee;border-color:#ddd}
+.pagination>.active>a,
+.pagination>.active>a:focus,
+.pagination>.active>a:hover,
+.pagination>.active>span,
+.pagination>.active>span:focus,
+.pagination>.active>span:hover{z-index:3;color:#fff;background-color:#337ab7;border-color:#337ab7;cursor:default}
+.pagination>.disabled>a,
+.pagination>.disabled>a:focus,
+.pagination>.disabled>a:hover,
+.pagination>.disabled>span,
+.pagination>.disabled>span:focus,
+.pagination>.disabled>span:hover{color:#777;background-color:#fff;border-color:#ddd;cursor:not-allowed}
+.pagination-lg>li>a,
+.pagination-lg>li>span{padding:10px 16px;font-size:18px;line-height:1.3333333}
+.pagination-lg>li:first-child>a,
+.pagination-lg>li:first-child>span{border-bottom-left-radius:0;border-top-left-radius:0}
+.pagination-lg>li:last-child>a,
+.pagination-lg>li:last-child>span{border-bottom-right-radius:0;border-top-right-radius:0}
+.pagination-sm>li>a,
+.pagination-sm>li>span{padding:5px 10px;font-size:12px;line-height:1.5}
+.pagination-sm>li:first-child>a,
+.pagination-sm>li:first-child>span{border-bottom-left-radius:0;border-top-left-radius:0}
+.pagination-sm>li:last-child>a,
+.pagination-sm>li:last-child>span{border-bottom-right-radius:0;border-top-right-radius:0}
+.typeahead.dropdown-menu{max-height:50vh; overflow:auto;}
+.flag{width:16px;height:11px;background:url(../img/flags.png) no-repeat;display:inline-block;margin:0 5px}.flag.flag-ad{background-position:-16px 0}.flag.flag-ae{background-position:-32px 0}.flag.flag-af{background-position:-48px 0}.flag.flag-al{background-position:-64px 0}.flag.flag-am{background-position:-80px 0}.flag.flag-at{background-position:-96px 0}.flag.flag-az{background-position:-112px 0}.flag.flag-ba{background-position:-128px 0}.flag.flag-bd{background-position:-144px 0}.flag.flag-be{background-position:-160px 0}.flag.flag-bg{background-position:0 -11px}.flag.flag-bh{background-position:-16px -11px}.flag.flag-bn{background-position:-32px -11px}.flag.flag-bt{background-position:-48px -11px}.flag.flag-bv{background-position:-64px -11px}.flag.flag-by{background-position:-80px -11px}.flag.flag-catalonia{background-position:-96px -11px}.flag.flag-ch{background-position:-112px -11px}.flag.flag-cn{background-position:-128px -11px}.flag.flag-cy{background-position:-144px -11px}.flag.flag-cz{background-position:-160px -11px}.flag.flag-de{background-position:0 -22px}.flag.flag-dk{background-position:-16px -22px}.flag.flag-ee{background-position:-32px -22px}.flag.flag-england{background-position:-48px -22px}.flag.flag-es{background-position:-64px -22px}.flag.flag-eu{background-position:-80px -22px}.flag.flag-fi{background-position:-96px -22px}.flag.flag-fo{background-position:-112px -22px}.flag.flag-fr{background-position:-128px -22px}.flag.flag-gb{background-position:-144px -22px}.flag.flag-ge{background-position:-160px -22px}.flag.flag-gg{background-position:0 -33px}.flag.flag-gi{background-position:-16px -33px}.flag.flag-gr{background-position:-32px -33px}.flag.flag-gs{background-position:-48px -33px}.flag.flag-hk{background-position:-64px -33px}.flag.flag-hm{background-position:-80px -33px}.flag.flag-hr{background-position:-96px -33px}.flag.flag-hu{background-position:-112px -33px}.flag.flag-ic{background-position:-128px -33px}.flag.flag-id{background-position:-144px -33px}.flag.flag-ie{background-position:-160px -33px}.flag.flag-il{background-position:0 -44px}.flag.flag-im{background-position:-16px -44px}.flag.flag-in{background-position:-32px -44px}.flag.flag-io{background-position:-48px -44px}.flag.flag-iq{background-position:-64px -44px}.flag.flag-ir{background-position:-80px -44px}.flag.flag-is{background-position:-96px -44px}.flag.flag-it{background-position:-112px -44px}.flag.flag-je{background-position:-128px -44px}.flag.flag-jo{background-position:-144px -44px}.flag.flag-jp{background-position:-160px -44px}.flag.flag-kg{background-position:0 -55px}.flag.flag-kh{background-position:-16px -55px}.flag.flag-kp{background-position:-32px -55px}.flag.flag-kr{background-position:-48px -55px}.flag.flag-kurdistan{background-position:-64px -55px}.flag.flag-kw{background-position:-80px -55px}.flag.flag-kz{background-position:-96px -55px}.flag.flag-la{background-position:-112px -55px}.flag.flag-lb{background-position:-128px -55px}.flag.flag-li{background-position:-144px -55px}.flag.flag-lk{background-position:-160px -55px}.flag.flag-lt{background-position:0 -66px}.flag.flag-lu{background-position:-16px -66px}.flag.flag-lv{background-position:-32px -66px}.flag.flag-mc{background-position:-48px -66px}.flag.flag-md{background-position:-64px -66px}.flag.flag-me{background-position:-80px -66px}.flag.flag-mk{background-position:-96px -66px}.flag.flag-mm{background-position:-112px -66px}.flag.flag-mn{background-position:-128px -66px}.flag.flag-mo{background-position:-144px -66px}.flag.flag-mt{background-position:-160px -66px}.flag.flag-mv{background-position:0 -77px}.flag.flag-my{background-position:-16px -77px}.flag.flag-nl{background-position:-32px -77px}.flag.flag-no{background-position:-48px -77px}.flag.flag-np{background-position:-64px -77px}.flag.flag-om{background-position:-80px -77px}.flag.flag-ph{background-position:-96px -77px}.flag.flag-pk{background-position:-112px -77px}.flag.flag-pl{background-position:-128px -77px}.flag.flag-ps{background-position:-144px -77px}.flag.flag-pt{background-position:-160px -77px}.flag.flag-qa{background-position:0 -88px}.flag.flag-ro{background-position:-16px -88px}.flag.flag-rs{background-position:-32px -88px}.flag.flag-ru{background-position:-48px -88px}.flag.flag-sa{background-position:-64px -88px}.flag.flag-scotland{background-position:-80px -88px}.flag.flag-se{background-position:-96px -88px}.flag.flag-sg{background-position:-112px -88px}.flag.flag-si{background-position:-128px -88px}.flag.flag-sk{background-position:-144px -88px}.flag.flag-sm{background-position:-160px -88px}.flag.flag-somaliland{background-position:0 -99px}.flag.flag-sy{background-position:-16px -99px}.flag.flag-tf{background-position:-32px -99px}.flag.flag-th{background-position:-48px -99px}.flag.flag-tj{background-position:-64px -99px}.flag.flag-tl{background-position:-80px -99px}.flag.flag-tm{background-position:-96px -99px}.flag.flag-tr{background-position:-112px -99px}.flag.flag-tw{background-position:-128px -99px}.flag.flag-ua{background-position:-144px -99px}.flag.flag-um{background-position:-160px -99px}.flag.flag-uz{background-position:0 -110px}.flag.flag-va{background-position:-16px -110px}.flag.flag-vn{background-position:-32px -110px}.flag.flag-wales{background-position:-48px -110px}.flag.flag-ye{background-position:-64px -110px}.flag.flag-zanzibar{background-position:-80px -110px}
