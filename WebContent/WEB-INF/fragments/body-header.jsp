@@ -2,9 +2,8 @@
 <%@ page import="util.*, filter.*, action.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
-<%@ taglib prefix="cust" uri="/WEB-INF/taglibs/i18n-custom.tld" %>
 
-<c:set var="language" scope="page" value="${sessionScope.language}"/>
+<c:set var="language" scope="page" value="${sessionScope[languageAttributeName]}"/>
 <c:set var="pageReloadUrlAttributeName" scope="page" value="<%= RequestEnrichmentFilter.RELOAD_URL_ATTRIBUTE_NAME %>"/>
 <c:set var="loggedInUser" scope="page" value="${true}" />
 
@@ -33,7 +32,7 @@
                     <li class="nav-item">
                         <form class="form-inline" action="<c:url value='/language'/>" enctype="application/x-www-form-urlencoded">
                         	<input type="hidden" name="<%= ChangeLanguageActionServlet.LANGUAGE_PARAM_NAME %>" value="EN">
-                        	<input type="hidden" name="<%= AServlet.LOCATION_PARAM_NAME %>" value="${requestScope[pageReloadUrlAttributeName]}">
+                        	<input type="hidden" name="<%= AServlet.LOCATION_PARAM_NAME %>">
 	                        <button class="btn btn-link ${(language == 'EN') ? 'active' : ''}" tabindex="1">
 	                            <i class="flag flag-gb"></i>
 	                        </button>
@@ -41,19 +40,19 @@
                     </li>
                     <li class="nav-item">
                         <form class="form-inline" action="<c:url value='/language'/>" enctype="application/x-www-form-urlencoded">
-                        	<input type="hidden" name="<%= ChangeLanguageActionServlet.LANGUAGE_PARAM_NAME %>" value="NO">
-                        	<input type="hidden" name="<%= AServlet.LOCATION_PARAM_NAME %>" value="${requestScope[pageReloadUrlAttributeName]}">
-	                        <button class="btn btn-link ${(language == 'NO') ? 'active' : ''}" tabindex="1">
-                            	<i class="flag flag-no"></i>
+                        	<input type="hidden" name="<%= ChangeLanguageActionServlet.LANGUAGE_PARAM_NAME %>" value="IN">
+                        	<input type="hidden" name="<%= AServlet.LOCATION_PARAM_NAME %>">
+	                        <button class="btn btn-link ${(language == 'IN') ? 'active' : ''}" tabindex="1">
+                            	<i class="flag flag-in"></i>
 	                        </button>
                         </form>
                     </li>
                     <li class="nav-item">
                         <form class="form-inline" action="<c:url value='/language'/>" enctype="application/x-www-form-urlencoded">
-                        	<input type="hidden" name="<%= ChangeLanguageActionServlet.LANGUAGE_PARAM_NAME %>" value="DA">
-                        	<input type="hidden" name="<%= AServlet.LOCATION_PARAM_NAME %>" value="${requestScope[pageReloadUrlAttributeName]}">
-	                        <button class="btn btn-link ${(language == 'DA') ? 'active' : ''}" tabindex="1">
-                            	<i class="flag flag-dk"></i>
+                        	<input type="hidden" name="<%= ChangeLanguageActionServlet.LANGUAGE_PARAM_NAME %>" value="FR">
+                        	<input type="hidden" name="<%= AServlet.LOCATION_PARAM_NAME %>">
+	                        <button class="btn btn-link ${(language == 'FR') ? 'active' : ''}" tabindex="1">
+                            	<i class="flag flag-fr"></i>
 	                        </button>
                         </form>
                     </li>

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
 
+import context.SessionListener;
+
 import util.JsonUtil;
 import util.ResponseWrapper;
 import dao.DaoCallSupport;
@@ -49,6 +51,7 @@ public abstract class AServlet extends HttpServlet {
 	public void init(final ServletConfig config) throws ServletException {
 		super.init(config);
 		this.getServletContext().setAttribute("totalDataPagesMapAttributeName", TOTAL_PAGES_MAP_ATTRIBUTE_NAME);
+		this.getServletContext().setAttribute("languageAttributeName", SessionListener.LANGUAGE_ATTRIBUTE_NAME);
 	}
 
 	/**

@@ -52,9 +52,6 @@ public final class ChangeLanguageActionServlet extends HttpServlet {
 	@Override
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("---" + request.getMethod() + "---");
-		}
 		this.doPost(request, response);
 
 	}
@@ -68,10 +65,6 @@ public final class ChangeLanguageActionServlet extends HttpServlet {
 	// ---------------------------------------------------------------------------------------------------------------------
 	@Override
 	protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("---" + request.getMethod() + "---");
-		}
 
 		final String language = ELanguage.findByName(request.getParameter(LANGUAGE_PARAM_NAME));
 		final String pageReloadUrl = request.getParameter(AServlet.LOCATION_PARAM_NAME);

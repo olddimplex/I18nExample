@@ -4,7 +4,9 @@
 <%@ page import="java.util.Date"  %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cust" uri="/WEB-INF/taglibs/custom.tld" %>
+<%@ taglib prefix="i18n" uri="/WEB-INF/taglibs/i18n-custom.tld" %>
 <c:set var="selectorClassName" scope="page" value="<%=EditableActionServlet.SELECTOR_CLASS_TIMEZONE_INFO %>"/>
+<c:set var="closeText" scope="page" value="${i18n:translate('Close', language)}"/>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,9 +18,9 @@
 		<table class="table table-sm">
 		  <thead>
 		    <tr>
-		      <th>Abbr.</th>
-		      <th>Name</th>
-		      <th>UTC offset</th>
+		      <th><c:out value="${i18n:translate('Abbr.', language)}"/></th>
+		      <th><c:out value="${i18n:translate('Name', language)}"/></th>
+		      <th><c:out value="${i18n:translate('UTC offset', language)}"/></th>
 		      <th/>
 		    </tr>
 		  </thead>
@@ -35,8 +37,8 @@
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <h5 class="modal-title" id="exampleModalLabel"><c:out value="${i18n:translate('Edit timezone', language)}"/></h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="<c:out value="${closeText}"/>">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
@@ -44,13 +46,8 @@
 	    </div>
 	  </div>
 	</div>
-<%-- 
-	The script below is intentionally made non-executable. It is solely used to provide textual content to JS code.
-	The"style" attribute is used because of the URL handling (prepending the context path).
-	The width and height are aligned with background image dimensions.
---%>
 	<script type="text/template" data-template="loading-indicator">
-		<div style="background:url(<c:url value='/img/loading.gif' />) no-repeat center center; width:100%; height:32px;">&nbsp;</div>
+		<div class="loading-indicator">&nbsp;</div>
 	</script>
 	<jsp:include page="<%=ViewPath.FRAGMENT_BODY_FOOTER %>"/>
   </body>

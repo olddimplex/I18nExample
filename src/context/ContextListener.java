@@ -42,7 +42,7 @@ public class ContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent arg0) {
         try {
             InputStreamReader reader =
-                new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("translations.lng"),"UTF-16");
+                new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("translations.csv"),"UTF-16");
             while(reader.ready()) {
                 String[] tokens = new String[3];
                 StringWriter sw = new StringWriter();

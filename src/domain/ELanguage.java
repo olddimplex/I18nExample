@@ -4,8 +4,8 @@ import context.SessionListener;
 
 public enum ELanguage {
 	EN,
-	DA,
-	NO;
+	FR,
+	IN;
 
 	/**
 	 * 

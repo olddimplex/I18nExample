@@ -49,16 +49,6 @@ public class RequestEnrichmentFilter implements Filter {
 		}
 		response.setCharacterEncoding(CHARACTER_ENCODING);
 		chain.doFilter(request, response);
-		
-		if(HttpUtil.isHttpRequest(request)) {
-			final HttpServletRequest httpRequest = (HttpServletRequest)request;
-			// URL that caused this request
-			final StringBuffer sb = httpRequest.getRequestURL();
-			if(httpRequest.getQueryString() != null) {
-				sb.append("?").append(httpRequest.getQueryString());
-			}
-			request.setAttribute(RELOAD_URL_ATTRIBUTE_NAME, sb.toString());
-		}
 	}
 
 	/**

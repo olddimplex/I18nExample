@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
@@ -56,17 +55,6 @@ public class ResponseWrapper extends HttpServletResponseWrapper {
 			    public void write(final int b) throws IOException {
 			    	ResponseWrapper.this.baos.write(b);
 			    }
-
-				@Override
-				public boolean isReady() {
-					// TODO Auto-generated method stub
-					return false;
-				}
-
-				@Override
-				public void setWriteListener(WriteListener arg0) {
-					// TODO Auto-generated method stub
-				}
 			};
 		}
 		return this.outputStream;

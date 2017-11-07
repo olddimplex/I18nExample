@@ -67,6 +67,10 @@
                 history.pushState(stateObj, null, newUrl);
             });
         });
+       	// Ensure all ordinary forms submit the page refresh url too (may not be known to server due to intermediaries)
+	   	el.find('form:not(.ajax-update),input[type="hidden"][name="location"]').each(function (ndx, el) {
+	    	$(el).attr("value", window.location.toString());
+	    });
         // Possibly render parts of page on load/refresh
         el.find("input[name='ajax-update']").each(function () {
             var className = $(this).val();
