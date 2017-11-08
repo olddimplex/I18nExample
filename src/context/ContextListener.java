@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.http.HttpSession;
 
 import domain.LngKey;
 import domain.Translation;
@@ -126,6 +127,25 @@ public class ContextListener implements ServletContextListener {
         }
         return phrase;
     }
+
+	/**
+	 * Finds a translation of the given phrase. <br/>
+	 * The search is case-sensitive and no pre-processing is applied (trim, normalize, etc.)
+	 *
+	 * @param phrase
+	 *            The exact phrase to translate
+	 * @param session
+	 *            to obtain the language code from
+	 * @return The translated phrase if found, the phrase itself otherwise.
+	 * @see {@link SessionListener#LANGUAGE_ATTRIBUTE_NAME}
+	 */
+	public static String translate(final String phrase, final HttpSession session) {
+		if (session != null) {
+			return translate(phrase, String.valueOf(session.getAttribute(SessionListener.LANGUAGE_ATTRIBUTE_NAME)));
+		} else {
+			return phrase;
+		}
+	}
 
     /**
      * Replaces the translations that are affected by the supplied list. <br/>

@@ -48,4 +48,30 @@ The request attribute name where view invocation count will be stored.
     </attribute>
   </tag>
 
+  <tag>
+    <description>
+Custom JSP tag adding DisplayMessage of type EDisplayMessageType.ERROR to current HTTP Session
+    </description>
+    <name>error-message</name>
+    <tag-class>jsp.ErrorMessageTagSupport</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+       <name>text</name>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <description>
+Custom JSP tag adding DisplayMessage of type EDisplayMessageType.SUCCESS to current HTTP Session
+    </description>
+    <name>success-message</name>
+    <tag-class>jsp.SuccessMessageTagSupport</tag-class>
+    <body-content>empty</body-content>
+    <attribute>
+       <name>text</name>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+
 </taglib>

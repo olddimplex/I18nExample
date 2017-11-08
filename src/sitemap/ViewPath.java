@@ -11,6 +11,7 @@ public class ViewPath {
 	
 	public static final String FRAGMENT_PAGINATION = "/WEB-INF/fragments/pagination.jsp";
 	public static final String FRAGMENT_PAGINATION_SECONDARY = "/WEB-INF/fragments/pagination-secondary.jsp";
+	public static final String FRAGMENT_ALERT = "/WEB-INF/fragments/alert.jsp";
 	
 	public static final String FRAGMENT_TIMEZONE_INFO_EDITABLE_PAGE = "/WEB-INF/editable/fragments/timezone-info-page.jsp";
 	public static final String FRAGMENT_TIMEZONE_INFO_DATA_MULTIPLE = "/WEB-INF/multiple/fragments/timezone-info-data.jsp";

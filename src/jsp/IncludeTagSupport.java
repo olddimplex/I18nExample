@@ -21,6 +21,14 @@ import dao.IStreamingCallback;
  * Custom JSP tag to stream database content directly to response output stream.
  */
 public final class IncludeTagSupport extends SimpleTagSupport {
+	
+	/** 
+	 * Request parameter name to hold the times 
+	 * {@link RequestDispatcher#include(javax.servlet.ServletRequest, javax.servlet.ServletResponse)} 
+	 * has been invoked after {@link #doTag()} execution is finished.
+	 * The intended use is to check if any data has been rendered or not.
+	 */
+	public static final String VIEW_COUNT_PARAM_NAME = "viewCount";
 
     @SuppressWarnings("unused")
 	private static final Logger LOGGER = LogManager.getLogger(IncludeTagSupport.class);

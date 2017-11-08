@@ -1,7 +1,8 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ page import="sitemap.*" %>
 <%@ page import="action.*" %>
-<%@ page import="java.util.Date"  %>
+<%@ page import="jsp.*" %>
+<%@ page import="java.util.Date" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cust" uri="/WEB-INF/taglibs/custom.tld" %>
 <%@ taglib prefix="i18n" uri="/WEB-INF/taglibs/i18n-custom.tld" %>
@@ -51,6 +52,7 @@
 		  <input type="hidden" name="classname" value="${resultListSelectorClassName}"/>
 		  <button type="submit" class="btn btn-primary"><c:out value="${i18n:translate('Search', language)}"/></button>
 		</form>
+		<div class="<%=AutocompleteActionServlet.SELECTOR_CLASS_DISPLAY_MESSAGES %>"></div>
 		<table class="table table-sm">
 		  <thead>
 		    <tr>

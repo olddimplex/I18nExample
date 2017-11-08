@@ -5,8 +5,12 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URLDecoder;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -25,6 +29,7 @@ import util.ResponseWrapper;
 import dao.DAOParams;
 import dao.DaoCallSupport;
 import dao.tz.TimezoneDao;
+import domain.DisplayMessage;
 import domain.TimezoneInfo;
 import filter.RequestEnrichmentFilter;
 
@@ -41,6 +46,8 @@ public class AutocompleteActionServlet extends AServlet {
 	public static final String SELECTOR_CLASS_TIMEZONE_INFO_EDIT = "timezoneInfoEdit";
 	/** Timezone suggestions by abbreviation prefix */
 	public static final String SELECTOR_CLASS_TIMEZONE_ABBREVIATION_SUGGESTIONS = "timezoneInfoSuggestionsByAbbreviationPrefix";
+	/** Display messages */
+	public static final String SELECTOR_CLASS_DISPLAY_MESSAGES = "displayMessages";
 	/** Holds the id of a {@link TimezoneInfo} object. */
 	public static final String TIMEZONE_ID_PARAM_NAME = "timezoneid"; // keep it lowercase
 	/** Holds the abbreviation of a {@link TimezoneInfo} object. */
@@ -116,6 +123,9 @@ public class AutocompleteActionServlet extends AServlet {
 			case SELECTOR_CLASS_TIMEZONE_ABBREVIATION_SUGGESTIONS:
 				this.respondWithTimezoneSuggestionList(request, response);
 				break;
+			case SELECTOR_CLASS_DISPLAY_MESSAGES:
+				this.respondWithDisplayMessageList(request, response);
+				break;
 			default:
 				break;
 		}
@@ -177,4 +187,24 @@ public class AutocompleteActionServlet extends AServlet {
 		}
 	}
 
+	private void respondWithDisplayMessageList(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException, SQLException {
+		final Deque<DisplayMessage> displayMessageDeque = this.getDisplayMessageDeque(request);
+		Collection<DisplayMessage> coll = null;
+		while(!displayMessageDeque.isEmpty()) {
+			if(coll == null) {
+				coll = new LinkedList<DisplayMessage>();
+			}
+			try {
+				coll.add(displayMessageDeque.removeFirst());
+			} catch (NoSuchElementException e) {
+				break;
+			}
+		}
+		if(coll != null && !coll.isEmpty()) {
+			request.setAttribute(
+				DISPLAY_MESSAGE_COLLECTION_PARAMETER_NAME, 
+				coll);
+			this.includeAsJsonML(ViewPath.FRAGMENT_ALERT, request, new ResponseWrapper(response), response);
+		}
+	}
 }

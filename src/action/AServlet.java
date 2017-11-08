@@ -1,21 +1,27 @@
 package action;
 
 import java.io.IOException;
+import java.util.Deque;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.Logger;
 
-import context.SessionListener;
-
+import util.IStringTransformer;
 import util.JsonUtil;
 import util.ResponseWrapper;
+import context.ContextListener;
+import context.SessionListener;
 import dao.DaoCallSupport;
+import domain.DisplayMessage;
+import domain.EDisplayMessageType;
 
 public abstract class AServlet extends HttpServlet {
 
@@ -47,6 +53,13 @@ public abstract class AServlet extends HttpServlet {
 	 */
 	public static final String DAO_CALL_SUPPORT_ATTRIBUTE_NAME = "dynamicIncludeDaoCallSupport";
 
+	public static final String DISPLAY_MESSAGE_DEQUE_KEY = "displayMessageDeque";
+
+	public static final String DISPLAY_MESSAGE_COLLECTION_PARAMETER_NAME = "displayMessageCollection";
+
+	/** For reference from within JSP */
+	public static final String CONTROLLER_SERVLET_INSTANCE = "controllerServletInstance";
+
 	@Override
 	public void init(final ServletConfig config) throws ServletException {
 		super.init(config);
@@ -54,6 +67,14 @@ public abstract class AServlet extends HttpServlet {
 		this.getServletContext().setAttribute("languageAttributeName", SessionListener.LANGUAGE_ATTRIBUTE_NAME);
 	}
 
+	@Override
+	protected void service(
+			final HttpServletRequest request, 
+			final HttpServletResponse response
+			) throws ServletException, IOException {
+		request.setAttribute(CONTROLLER_SERVLET_INSTANCE, this);
+		super.service(request, response);
+	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -142,6 +163,73 @@ public abstract class AServlet extends HttpServlet {
 			final HttpServletResponse response,
 			final String fragmentClassName
 			) throws Exception {
+	}
+
+	public void addErrorMessage(
+			final HttpServletRequest request, 
+			final String messageText, 
+			final IStringTransformer transformer) {
+		this.getLogger().error(transformer.transform(messageText));
+		final String messageTextTranslated = ContextListener.translate(messageText, request.getSession(false));
+		this.addMessage(request, transformer.transform(messageTextTranslated), EDisplayMessageType.ERROR);
+	}
+
+	public void addErrorMessage(
+			final HttpServletRequest request, 
+			final String messageText, 
+			final Throwable throwable,
+			final IStringTransformer transformer) {
+		this.getLogger().error(transformer.transform(messageText), throwable);
+		final String messageTranslated = ContextListener.translate(messageText, request.getSession(false));
+		this.addMessage(request, transformer.transform(messageTranslated), EDisplayMessageType.ERROR);
+	}
+
+	public void addErrorMessage(final HttpServletRequest request, final String messageText) {
+		this.addMessage(request, messageText, EDisplayMessageType.ERROR);
+	}
+
+	public void addSuccessMessage(final HttpServletRequest request, final String messageText) {
+		this.addMessage(request, messageText, EDisplayMessageType.SUCCESS);
+	}
+
+	public void addSuccessMessage(
+			final HttpServletRequest request, 
+			final String messageText, 
+			final IStringTransformer transformer) {
+		this.getLogger().error(transformer.transform(messageText));
+		final String messageTextTranslated = ContextListener.translate(messageText, request.getSession(false));
+		this.addMessage(request, transformer.transform(messageTextTranslated), EDisplayMessageType.SUCCESS);
+	}
+
+	private void addMessage(
+			final HttpServletRequest request, 
+			final String messageText, 
+			final EDisplayMessageType displayMessageType) {
+		final HttpSession session = request.getSession(false);
+		if (session != null) {
+			final DisplayMessage displayMessage = new DisplayMessage(displayMessageType, messageText);
+			this.getDisplayMessageDeque(session).add(displayMessage);
+		}
+	}
+
+	public Deque<DisplayMessage> getDisplayMessageDeque(final HttpServletRequest request) {
+		final HttpSession session = request.getSession(false);
+		if (session != null) {
+			return this.getDisplayMessageDeque(session);
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Deque<DisplayMessage> getDisplayMessageDeque(final HttpSession session) {
+		final Object displayMessageDequeObj = session.getAttribute(DISPLAY_MESSAGE_DEQUE_KEY);
+		if (displayMessageDequeObj != null && Deque.class.isInstance(displayMessageDequeObj)) {
+			return (Deque<DisplayMessage>) displayMessageDequeObj;
+		} else {
+			final Deque<DisplayMessage> displayMessageCollection = new ConcurrentLinkedDeque<>();
+			session.setAttribute(DISPLAY_MESSAGE_DEQUE_KEY, displayMessageCollection);
+			return displayMessageCollection;
+		}
 	}
 
 	protected abstract Logger getLogger();
