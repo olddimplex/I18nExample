@@ -1,8 +1,10 @@
 package context;
 
+import i18n.LngKey;
+import i18n.Translation;
+import i18n.xlsx.XLSXTranslationSource;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,14 +13,21 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSession;
+import javax.xml.parsers.ParserConfigurationException;
 
-import domain.LngKey;
-import domain.Translation;
+import org.xml.sax.SAXException;
+
+import util.CSVParser;
+import util.IConsumer;
 
 /**
  * Implementation of {@link ServletContextListener}
  */
 public class ContextListener implements ServletContextListener {
+	
+	public static enum ETranslationSource {
+		CSV, XLSX
+	}
     
     private static ConcurrentHashMap<LngKey,String> TRANSLATIONS;
     
@@ -31,7 +40,7 @@ public class ContextListener implements ServletContextListener {
      * 
      * @see ServletContextListener#contextDestroyed(ServletContextEvent)
      */
-    public void contextDestroyed(ServletContextEvent arg0) {
+    public void contextDestroyed(final ServletContextEvent arg0) {
         // TODO Auto-generated method stub
     }
 
@@ -40,75 +49,51 @@ public class ContextListener implements ServletContextListener {
      * 
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
-    public void contextInitialized(ServletContextEvent arg0) {
-        try {
-            InputStreamReader reader =
-                new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("translations.csv"),"UTF-16");
-            while(reader.ready()) {
-                String[] tokens = new String[3];
-                StringWriter sw = new StringWriter();
-                if(tokens.length == parseLine(reader, sw, tokens, '"', ',')) {
-                    String language = tokens[0].trim();
-                    if(language.length() > 0 && !language.startsWith("#")) {
-                        String keyPhrase = tokens[1].trim();
-                        if(keyPhrase.length() > 0) {
-                            if(TRANSLATIONS == null) {
-                                // Note only one thread is supposed to update the map
-                                TRANSLATIONS = new ConcurrentHashMap<LngKey,String>(16, 0.75F, 1);
-                            }
-                            TRANSLATIONS.put(new LngKey(language, keyPhrase),tokens[2]);
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
+    public void contextInitialized(final ServletContextEvent arg0) {
+    	final ETranslationSource translationSource = ETranslationSource.XLSX;
+    	try {
+    		switch(translationSource) {
+	    		case CSV: 
+	    			loadFromCSV();
+	    			break;
+	    		case XLSX: 
+	    			loadFromXLSX();
+	    			break;
+	    		default: 
+	    			loadFromCSV();
+	    			break;
+    		}
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }
-    
-    private int parseLine(
-        InputStreamReader reader
-      , StringWriter sw
-      , String[] fields
-      , char quoteChar
-      , char fieldDelimiter
-      ) throws IOException {
-        int fieldIndex = 0;
-        boolean isQuoted = false;
-        boolean preceededByQuote = false;
-        int currentChar = -1;
-        sw.getBuffer().setLength(0);
-        while((currentChar = reader.read()) >= 0 && currentChar != 13 && currentChar != 10) {
-            if(fieldIndex < fields.length) {
-                if(currentChar == quoteChar) { 
-                    isQuoted = !isQuoted;
-                    if(isQuoted) {
-                        if(preceededByQuote) {
-                            sw.write(currentChar);
-                            preceededByQuote = false;
-                        }
-                    } else {
-                        preceededByQuote = true;
-                    }
-                    continue;
-                } else {
-                    preceededByQuote = false;
-                }
-                if(!isQuoted && currentChar == fieldDelimiter) {
-                    fields[fieldIndex] = sw.toString();
-                    sw.getBuffer().setLength(0);
-                    fieldIndex++;
-                    continue;
-                }
-                sw.write(currentChar);
-            }
-        }
-        if(fieldIndex < fields.length) {
-            fields[fieldIndex] = sw.toString();
-            fieldIndex++;
-        }
-        return fieldIndex;
-    }
+
+	private void loadFromCSV() throws IOException {
+		new CSVParser("translations.csv", "UTF-16").parse(new String[3], '"', ',', new IConsumer<String[]>() {
+			@Override
+			public void accept(String[] tokens) {
+		        final String language = tokens[0].trim();
+		        if(language.length() > 0 && !language.startsWith("#")) {
+		            final String keyPhrase = tokens[1].trim();
+		            if(keyPhrase.length() > 0) {
+		                if(TRANSLATIONS == null) {
+		                    // Note only one thread is supposed to update the map
+		                    TRANSLATIONS = new ConcurrentHashMap<LngKey,String>(16, 0.75F, 1);
+		                }
+		                TRANSLATIONS.put(new LngKey(language, keyPhrase),tokens[2]);
+		            }
+		        }
+			}
+		});
+	}
+
+	private void loadFromXLSX() throws SAXException, IOException, ParserConfigurationException {
+		if(TRANSLATIONS == null) {
+			// Note only one thread is supposed to update the map
+			TRANSLATIONS = new ConcurrentHashMap<LngKey,String>(16, 0.75F, 1);
+		}
+		new XLSXTranslationSource("translations.xlsx").export(TRANSLATIONS);
+	}
 
     /**
      * Finds a translation of the given phrase. <br/>
@@ -118,9 +103,9 @@ public class ContextListener implements ServletContextListener {
      * @param language Language key as stored in the translations file
      * @return The translated phrase if found, the phrase itself otherwise.
      */
-    public static String translate(String phrase, String language) {
+    public static String translate(final String phrase, final String language) {
         if(TRANSLATIONS != null) {
-            String translation = TRANSLATIONS.get(new LngKey(language, phrase));
+            final String translation = TRANSLATIONS.get(new LngKey(language, phrase));
             if(translation != null) {
                 return translation;
             }
@@ -154,11 +139,11 @@ public class ContextListener implements ServletContextListener {
      * @param changedTranslarionsList
      * @return the latest change time in the list
      */
-    public static Timestamp updateTranslations(List<Translation> changedTranslarionsList) {
+    public static Timestamp updateTranslations(final List<Translation> changedTranslarionsList) {
         Timestamp latestChangeTime = null;
         if(changedTranslarionsList != null && !changedTranslarionsList.isEmpty() && !UPDATE_IN_PROGRESS) {
             UPDATE_IN_PROGRESS = true;
-            for(Translation t: changedTranslarionsList) {
+            for(final Translation t: changedTranslarionsList) {
                 if(isMeaningful(t)) {
                     TRANSLATIONS.replace(new LngKey(t.getLanguage(), t.getOrigin()),t.getResult());
                     if(t.getChangeDate() != null) {
@@ -176,7 +161,7 @@ public class ContextListener implements ServletContextListener {
         return latestChangeTime;
     }
     
-    private static boolean isMeaningful(Translation t) {
+    private static boolean isMeaningful(final Translation t) {
         return t != null && 
                t.getOrigin() != null && t.getOrigin().trim().length() > 0 &&
                t.getLanguage() != null && t.getLanguage().trim().length() > 0;

@@ -1,5 +1,7 @@
 package action;
 
+import i18n.ELanguage;
+
 import java.io.IOException;
 import java.security.AccessControlException;
 
@@ -15,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 
 import sitemap.ServletPath;
 import context.SessionListener;
-import domain.ELanguage;
 
 /**
  * The Class ChangeLanguageActionServlet.

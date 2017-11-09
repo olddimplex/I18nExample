@@ -1,4 +1,4 @@
-package domain;
+package i18n;
 
 /**
  * Key object to serve the translation map. <br/>

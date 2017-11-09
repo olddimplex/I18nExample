@@ -1,4 +1,4 @@
-package domain;
+package i18n;
 
 import context.SessionListener;
 
